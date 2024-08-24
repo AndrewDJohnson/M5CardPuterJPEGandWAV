@@ -20,7 +20,6 @@ There seems to be a delay after the jpeg loads or before the sound is played... 
 #include "M5Cardputer.h"
 #include "FS.h"
 
-
 //Buffer pointer - set to where the WAV file data is loaded.
 char *buffer;
 
@@ -34,27 +33,27 @@ struct key_and_filname
 //Initialise a "look up" table of keys and file names.
 struct key_and_filname keys_and_files[]=
 {
- {"a","ALERT.WAV"},
-{"b","BEAMUP.WAV"},
-{"c","BEEP1.WAV"},
-{"d","BEEP2.WAV"},
-{"s","BRDGSRN.WAV"},
-{"e","DISRUPTR.WAV"},
-{"o","DOOR.WAV"},
-{"h","Heart.wav"},
-{"m","MEDISCAN.WAV"},
-{"p","PHASBANK.WAV"},
-{"q","PHASER.WAV"},
-{"w","PHASER2.WAV"},
-{"t","PHOTON.WAV"},
-{"l","SHTLCRFT.WAV"},
-{"w","Warp1.wav"},
-{"f","WARP6.WAV"},
-{"z","WARPDEC.WAV"},
-{"i","Whistle.wav"},
-{"k","KIRKHERE.WAV"},
-//End with 0 so we know to stop!
-0
+   {"a","ALERT.WAV"},
+   {"b","BEAMUP.WAV"},
+   {"c","BEEP1.WAV"},
+   {"d","BEEP2.WAV"},
+   {"s","BRDGSRN.WAV"},
+   {"e","DISRUPTR.WAV"},
+   {"o","DOOR.WAV"},
+   {"h","Heart.wav"},
+   {"m","MEDISCAN.WAV"},
+   {"p","PHASBANK.WAV"},
+   {"q","PHASER.WAV"},
+   {"w","PHASER2.WAV"},
+   {"t","PHOTON.WAV"},
+   {"l","SHTLCRFT.WAV"},
+   {"w","Warp1.wav"},
+   {"f","WARP6.WAV"},
+   {"z","WARPDEC.WAV"},
+   {"i","Whistle.wav"},
+   {"k","KIRKHERE.WAV"},
+   //End with 0 so we know to stop!
+   0
 };
 /***********************
 /* From the sound-playing example - load a named wav file and play it! 
@@ -173,7 +172,6 @@ void loop() {
                           break;
                       case 't':
                           M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/photontp.jpg", 0, 0);
-                          
                           break; 
                     }
 
@@ -182,7 +180,6 @@ void loop() {
                     loadWav((char *)full_file_name.c_str());
                     break;
                   }
-
                   key_check++;
                 }
             }
@@ -190,7 +187,6 @@ void loop() {
             M5Cardputer.Display.drawString(keyStr,
                                            M5Cardputer.Display.width() / 2,
                                            100);
-            
         } 
         else // If not key has been pressed.
         {
