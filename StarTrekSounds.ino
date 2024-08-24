@@ -79,15 +79,13 @@ void loadWav(char *fileName)
  
         // Read the file into the buffer
         size_t bytesRead = file.readBytes(buffer, fileSize);
- 
-        M5Cardputer.Speaker.begin();
+        Serial.printf("BytesRead: %ld\n", bytesRead);
         M5Cardputer.Speaker.playWav((const uint8_t*)buffer);
- 
-        Serial.printf("BytesRead: %ld", bytesRead);
  
         // Remember to free the memory after use
         delete[] buffer;
     }
+    file.close();
 }
 /**** Set things up before the main loop! ****/
 void setup() 
@@ -96,12 +94,13 @@ void setup()
     auto cfg = M5.config();
     Serial.begin(115200);    
     M5Cardputer.begin(cfg, true);
+    M5Cardputer.Speaker.begin();
 
     //Set up the display on the Cardputer 
     M5Cardputer.Display.setRotation(1);
-    M5Cardputer.Display.setTextColor(GREEN);
+    M5Cardputer.Display.setTextColor(RED);
     M5Cardputer.Display.setTextDatum(middle_center);
-    M5Cardputer.Display.setTextFont(&fonts::FreeSerifBoldItalic18pt7b);
+    M5Cardputer.Display.setTextFont(&fonts::FreeSerif18pt7b);
     M5Cardputer.Display.setTextSize(1);
                                    
    //Check SD card etc 
@@ -112,9 +111,9 @@ void setup()
                                    M5Cardputer.Display.width() / 2,
                                    M5Cardputer.Display.height() / 2);
         
-        M5Cardputer.Display.drawString("Please insert",
+        M5Cardputer.Display.drawString("Please insert one?",
                                    M5Cardputer.Display.width() / 2,
-                                   M5Cardputer.Display.height() / 2 + 12);
+                                   M5Cardputer.Display.height() / 2 + 30);
         delay (3000);
         M5Cardputer.Display.clear();
     }
@@ -133,7 +132,7 @@ void loop() {
   struct key_and_filname *key_check;
 
     M5Cardputer.update();
-    
+    M5Cardputer.Display.setTextColor(GREEN);
     // Check if jkeys are pressed.
     if (M5Cardputer.Keyboard.isChange()) {
         if (M5Cardputer.Keyboard.isPressed()) 
@@ -157,21 +156,27 @@ void loop() {
                 //Scan through table.
                 while (key_check)
                 {
-                  //Have we pressed a particular key which causes us to load  a jpeg (choice of 2 at the moment)
-                  switch (key_pressed)
-                  {
-                     case 'k':
-                        M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/kirk.jpg", 0, 0);
-                        break;
-                     case 'q':
-                     case 'p':
-                     case 'e':
-                        M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/enterprise.jpg", 0, 0);
-                        break; 
-                  }
                   //Now check if we need to load a corresponding WAV file.
                   if (key_pressed == *key_check->key)
                   {
+                    //Have we pressed a particular key which causes us to load  a jpeg (choice of 2 at the moment)
+                    switch (key_pressed)
+                    {
+                      case 'k':
+                          M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/kirk.jpg", 0, 0);
+                          Serial.printf("Kirk loaded...\n");
+                          break;
+                      case 'q':
+                      case 'w':
+                      case 'e':
+                          M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/enterprise.jpg", 0, 0);
+                          break;
+                      case 't':
+                          M5Cardputer.Display.drawJpgFile(SD, "/StarTrek/photontp.jpg", 0, 0);
+                          
+                          break; 
+                    }
+
                     String full_file_name;
                     full_file_name = "/StarTrek/" + String(key_check->file_name);
                     loadWav((char *)full_file_name.c_str());
@@ -184,7 +189,7 @@ void loop() {
             //Display the key pressed
             M5Cardputer.Display.drawString(keyStr,
                                            M5Cardputer.Display.width() / 2,
-                                           M5Cardputer.Display.height() / 2);
+                                           100);
             
         } 
         else // If not key has been pressed.
